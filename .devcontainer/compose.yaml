@@ -1,0 +1,31 @@
+# Compose V2
+# https://matsuand.github.io/docs.docker.jp.onthefly/compose/cli-command/
+# internal network
+# https://www.timedia.co.jp/tech/20220628-tech/
+# project name
+# https://incrementleaf.net/articles/docker-compose-change-project-name/
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: /bin/bash
+    container_name: slackbot_go_app
+    networks:
+      - internal
+      - external
+    stdin_open: true
+    tty: true
+    volumes:
+      - type: bind
+        source: ../src
+        target: /go/src
+    env_file:
+      - ./.variables.env
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  external:
+    driver: bridge
+    internal: false

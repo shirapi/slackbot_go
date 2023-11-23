@@ -1,0 +1,7 @@
+.aws-sam
+# make from template
+.devcontainer/.variables.env
+deploy.zsh
+# etc
+.tool-versions
+.tmp/*

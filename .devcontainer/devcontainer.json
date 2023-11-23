@@ -1,0 +1,51 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// https://zenn.dev/bun913/articles/f0a6c6177a4716
+{
+    "name": "slackbot_go",
+    "dockerComposeFile": ["compose.yaml"],
+    "service": "app",
+    "workspaceFolder": "/go/src",
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+                "golang.go"
+                // "editorconfig.editorconfig",
+			],
+            "settings": {
+                "go.formatTool": "gofmt",
+                "go.lintOnSave": "off",
+                "go.lintTool": "golangci-lint",
+                "go.gopath": "/go",
+                "go.toolsManagement.checkForUpdates": "off",
+                "go.useLanguageServer": true,
+                // "editor.formatOnSave": false,
+                "[go]": {
+                    // "editor.formatOnSave": false,
+                    // "editor.codeActionsOnSave": {
+                    //     "source.organizeImports": false
+                    // },
+                    // // Optional: Disable snippets, as they conflict with completion ranking.
+                    // "editor.snippetSuggestions": "none"
+                    "editor.snippetSuggestions": "top"
+                },
+                "[go.mod]": {
+                    // "editor.formatOnSave": false,
+                    // "editor.codeActionsOnSave": {
+                    //     "source.organizeImports": false
+                    // }
+                },
+                "gopls": {
+                    // Add parameter placeholders when completing a function.
+                    "usePlaceholders": true,
+            
+                    // If true, enable additional analyses with staticcheck.
+                    // Warning: This will significantly increase memory usage.
+                    "staticcheck": true
+                }
+            }
+		}
+	}
+    // "remoteUser": "root"
+}
