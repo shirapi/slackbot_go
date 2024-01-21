@@ -8,18 +8,19 @@ Description: >
 Globals:
   Function:
     Handler: bootstrap
-    Runtime: provided.al2 # TODO provided.al2023
-    CodeUri: src
+    Runtime: provided.al2023 # TODO provided.al2023
+    CodeUri: src/
     MemorySize: 256
     # MemorySize: 128
     Timeout: 180
     Environment:
       Variables:
+        AI_MODEL: 'gpt-3.5-turbo'
         OPENAI_API_KEY: !Ref ApiKey
         SLACK_CHANNEL_ID: !Ref ChannelId
         SLACK_API_SIGNING_SECRET: !Ref SigningSecret
         SLACK_BOT_OAUTH_TOKEN: !Ref OAuthToken
-        AI_MODEL: 'gpt-3.5-turbo'
+        SLACK_VERIFICATION_TOKEN: !Ref VerificationToken
     Tracing: Active
     Architectures:
       - x86_64
@@ -37,6 +38,9 @@ Parameters:
     Type: String
     NoEcho: true
   OAuthToken:
+    Type: String
+    NoEcho: true
+  VerificationToken:
     Type: String
     NoEcho: true
 
