@@ -14,10 +14,13 @@ import (
 )
 
 type OpenAI struct {
+	model string
 }
 
-func NewOpenAI() *OpenAI {
-	return &OpenAI{}
+func NewOpenAI(model string) *OpenAI {
+	return &OpenAI{
+		model: model,
+	}
 }
 
 func (a *OpenAI) Call(ai domain.Charactor, histories []domain.History, userMessage string) (string, error) {
@@ -62,6 +65,8 @@ func (a *OpenAI) Call(ai domain.Charactor, histories []domain.History, userMessa
 			ai.GetInputLabel():   userMessage,
 			ai.GetHistoryLabel(): chatHistory,
 		},
+		chains.WithModel(a.model),
+		chains.WithTemperature(0.6),
 	)
 	if err != nil {
 		fmt.Println("chain error:", err)

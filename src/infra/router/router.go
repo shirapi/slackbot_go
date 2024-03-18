@@ -19,7 +19,11 @@ func SetupMux() *chi.Mux {
 	r.Use(middleware.RealIP)
 	r.Use(RequestLog)
 
-	talker := di.NewHiyokoTalker()
+	talker, err := di.NewHiyokoTalker()
+	if err != nil {
+		panic(err)
+	}
+
 	r.Get("/", routing(Service{Handler: talker.Talk}))
 
 	return r

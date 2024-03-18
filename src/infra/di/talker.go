@@ -9,10 +9,11 @@ import (
 	"github.com/slack-go/slack"
 )
 
-func NewHiyokoTalker() *slackbot.Talker {
+func NewHiyokoTalker() (*slackbot.Talker, error) {
+	// TODO 環境変数のチェック
 	return &slackbot.Talker{
 		Client: slack.New(os.Getenv("SLACK_BOT_OAUTH_TOKEN")),
-		Model:  aimodel.NewOpenAI(),
+		Model:  aimodel.NewOpenAI(os.Getenv("AI_MODEL")),
 		AI:     charactor.NewHiyoko(),
-	}
+	}, nil
 }
