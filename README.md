@@ -1,8 +1,10 @@
-## ChatGPTを搭載したSlackbot
-* TODO
+## AIを搭載したSlackbot
+**メンテナンス終了。依存ライブラリの更新等により動作しない可能性がある**
+
+<!-- * TODO
     * CodePipelineを構築し、mainブランチにpushでデプロイする
     * Amazon Bedrockを利用してみる(モデルはclaude2など)
-    * FunctionsURLからAPI Gatewayに変更
+    * FunctionsURLからAPI Gatewayに変更 -->
 
 ### 仕様
 * Botを使用できるのは特定のオープンチャンネルに限定する。
@@ -13,20 +15,23 @@
 * スレッドの内容に関してはBotは記憶がある状態で話ができる。
 
 ### 構成
-* Lambda + Lambda FunctionsURL + Slack Bolt(python) + ChatGPT + LangChain(python)
-    * Lambdaランタイム: Python 3.10
-    * OpenAIなどのライブラリはlayerとして実装
-    * SlackのSecretなどは環境変数で管理
-    * CodePipeline + AWS SAMでデプロイする
+* Lambda + Lambda FunctionsURL + Slack SDK + LangChainGo + Bedrock
+    * Lambdaランタイム: al2023 Go
+    * SlackのSecretなどはParameter StoreにSecureStringで保管し、環境変数で保持
+    * CodeBuild + GitHub Webhookトリガーでpushを起点にAWS SAMでデプロイする
 
-![構成図](https://github.com/shirapi/chatgpt_slackbot/assets/55041839/147e5ef9-cf03-4276-95d5-27217b90e67c)
+![構成図](./architecture.png)
 
-#### 開発時 OpenAI APK Keyの設定
+<!-- #### 開発時 OpenAI APK Keyの設定
 ```sh
 cd .devcontainer
-cp .variables.env.txt .variables.env
+cp .variables.env.dummy .variables.env
 # 開いて MyOpenAPIKey を自分のapi keyに変更
-```
+``` -->
+
+#### 環境変数
+* `AI_MODEL_PROVIDER`: LLMプロバイダ名（例: `anthropic`）
+* `AI_MODEL_ID`: AWS Bedrockのモデルまたは推論プロファイルID（例: `global.anthropic.claude-sonnet-4-6`）
 
 #### 注意事項
-* Lambdaのタイムアウトは3分程度は必要、動作しない場合はメモリを256MB以上とする
+* Lambdaのタイムアウトは3分、動作しない場合はメモリを256MB以上とする
