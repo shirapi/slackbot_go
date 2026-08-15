@@ -24,7 +24,7 @@ func SetupMux() *chi.Mux {
 		panic(err)
 	}
 
-	r.Get("/", routing(Service{Handler: talker.Talk}))
+	r.Post("/", routing(Service{Handler: talker.Talk}))
 
 	return r
 }

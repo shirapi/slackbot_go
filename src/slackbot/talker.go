@@ -39,12 +39,12 @@ func (t *Talker) Talk(r *http.Request) domain.Response {
 	// https://simple-minds-think-alike.moritamorie.com/entry/verify-requests-with-slack-go
 	event, err := slackevents.ParseEvent(
 		body,
-		// slackevents.OptionNoVerifyToken()
-		slackevents.OptionVerifyToken(
-			&slackevents.TokenComparator{
-				VerificationToken: os.Getenv("SLACK_VERIFICATION_TOKEN"),
-			},
-		),
+		slackevents.OptionNoVerifyToken(),
+		// slackevents.OptionVerifyToken(
+		// 	&slackevents.TokenComparator{
+		// 		VerificationToken: os.Getenv("SLACK_VERIFICATION_TOKEN"),
+		// 	},
+		// ),
 	)
 
 	if err != nil {
@@ -150,7 +150,9 @@ func (t *Talker) GetHistory(ev *slackevents.AppMentionEvent) ([]domain.History, 
 	if err != nil {
 		return nil, err
 	}
-	msgs = msgs[:len(msgs)-1] // 最新のメッセージは重複なので消す
+	if len(msgs) > 0 {
+		msgs = msgs[:len(msgs)-1] // 最新のメッセージは重複なので消す
+	}
 	remMention := func(s string) string {
 		re := regexp.MustCompile(`^<@[^>]+>\s*`)
 		return re.ReplaceAllString(s, "")
@@ -166,7 +168,7 @@ func (t *Talker) GetHistory(ev *slackevents.AppMentionEvent) ([]domain.History, 
 			Message:     remMention(msg.Text),
 		})
 	}
-	fmt.Printf("history============%+v\n", h)
+	// fmt.Printf("history============%+v\n", h)
 	return h, nil
 }
 
@@ -186,7 +188,7 @@ func (t *Talker) postErrorMessage(ev *slackevents.AppMentionEvent, errType int) 
 	message := t.AI.GetErrorMessage(errType)
 	err := t.postMessage(ev, message)
 	if err == nil {
-		err = errors.New("エラーメッセージ返信 error")
+		err = errors.New("エラーメッセージ返信完了")
 	}
 	return err
 }
